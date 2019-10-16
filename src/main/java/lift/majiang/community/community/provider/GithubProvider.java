@@ -3,8 +3,8 @@ package lift.majiang.community.community.provider;
 import com.alibaba.fastjson.JSON;
 import lift.majiang.community.community.dto.AccesstokenDTO;
 import lift.majiang.community.community.dto.GithubUser;
-import org.springframework.stereotype.Component;
 import okhttp3.*;
+import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
@@ -13,14 +13,23 @@ public class GithubProvider {
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();
 
-//        RequestBody body = RequestBody.create(mediaType,JSON.toJSONString(accesstokenDTO));
-        RequestBody body = new FormBody.Builder()
-                .add(String.valueOf(mediaType),JSON.toJSONString(accesstokenDTO))
-                .build();
+        RequestBody body = RequestBody.create(mediaType,JSON.toJSONString(accesstokenDTO));
+//        RequestBody body = new FormBody.Builder()
+//                .add(String.valueOf(mediaType), JSON.toJSONString(accesstokenDTO))
+//                .build();
         Request request = new Request.Builder()
                 .url("https://github.com/login/oauth/access_token")
                 .post(body)
                 .build();
+        try{
+            Response response = client.newCall(request).execute();
+            String string = response.body().string();
+            System.out.println(string);
+            return string;
+//            return response.body().string();
+        } catch (IOException e) {
+
+        }
 
 //        try (Response response = client.newCall(request).execute()) {
 //            String string = response.body().string();
