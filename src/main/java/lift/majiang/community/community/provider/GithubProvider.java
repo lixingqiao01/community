@@ -25,19 +25,13 @@ public class GithubProvider {
             Response response = client.newCall(request).execute();
             String string = response.body().string();
             System.out.println(string);
-            return string;
-//            return response.body().string();
+            String[] split = string.split("&");
+            String tokenStr = split[0];
+            String token = tokenStr.split("=")[1];
+            return token;
         } catch (IOException e) {
 
         }
-
-//        try (Response response = client.newCall(request).execute()) {
-//            String string = response.body().string();
-//            System.out.println(string);
-//            return response.body().string();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         return null;
     }
 
